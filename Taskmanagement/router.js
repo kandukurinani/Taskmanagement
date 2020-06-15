@@ -23,20 +23,37 @@ router.put('/updateTaskByStatus/:id', TaskController.TaskDetailsUpdate);
 router.get('/getallTasks', TaskController.getAllTaskDetails);
 router.delete('/deleteTaskById/:id', TaskController.deleteTaskDetails);
 router.get('/aggregate',TaskController.TaskDetailAggregation);
-router.post("/uploadfile", upload.single("uploadfile"), (req, res) => {
-    TaskController.importExcelData2MongoDB(__basedir + "/uploads/" + req.file.filename);
-    res.json({
-      msg: "File uploaded/import successfully!",
-      file: req.file,
-    });
-  });
-  router.post("/text/uploadfile", upload.single("uploadfile"), (req, res) => {
-    TaskController.importTextData2MongoDB(__basedir + "/uploads/" + req.file.filename);
-    res.json({
-      msg: "File uploaded/import successfully!",
-      file: req.file,
-    });
-  });
+router.post('/upload',(req,res)=>{
+  let filepath = req.files.uploadfile.tempFilePath;
+  TaskController.importExcelData2MongoDB(filepath);
+  res.json({
+          msg: "File uploaded/import successfully!",
+          file: req.file,
+        });
+})
+router.post('/text/upload',(req,res)=>{
+  let filepath = req.files.uploadfile.tempFilePath;
+  TaskController.importTextData2MongoDB(filepath);
+  res.json({
+          msg: "File uploaded/import successfully!",
+          file: req.file,
+        });
+})
+
+// router.post("/uploadfile", upload.single("uploadfile"), (req, res) => {
+//     TaskController.importExcelData2MongoDB(__basedir + "/uploads/" + req.file.filename);
+//     res.json({
+//       msg: "File uploaded/import successfully!",
+//       file: req.file,
+//     });
+//   });
+//   router.post("/text/uploadfile", upload.single("uploadfile"), (req, res) => {
+//     TaskController.importTextData2MongoDB(__basedir + "/uploads/" + req.file.filename);
+//     res.json({
+//       msg: "File uploaded/import successfully!",
+//       file: req.file,
+//     });
+//   });
 
 //   router.post("/text/uploadfile", upload.single("uploadfile"), (req, res) => {
 //     TaskController.importTextData2MongoDB(__basedir + "/uploads/" + req.file.filename);
